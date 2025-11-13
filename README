@@ -1,0 +1,142 @@
+# CATGallery PWA  
+Progressive Web App desenvolvido para exibir imagens de gatos, consultar raças, salvar favoritos e funcionar parcialmente offline.  
+Projeto implementado como monorepo contendo aplicação PWA (front-end) e API (back-end), ambos containerizados e integrados via Docker C
+
+## Sumário
+
+- [Visão Geral](#visão-geral)
+- [Arquitetura do Projeto](#arquitetura-do-projeto)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Funcionalidades do PWA](#funcionalidades-do-pwa)
+- [Estrutura do Repositório](#estrutura-do-repositório)
+- [Backend (API)](#backend-api)
+- [Endpoints da API](#endpoints-da-api)
+- [Execução Local com Docker Compose](#execução-local-com-docker-compose)
+- [Rodando a Aplicação Manualmente](#rodando-a-aplicação-manualmente)
+- [Testes](#testes)
+- [CI/CD — GitHub Actions](#cicd--github-actions)
+- [Publicação no GitHub Pages](#publicação-no-github-pages)
+- [PWA — Instalação e Offline](#pwa--instalação-e-offline)
+- [Capturas de Tela](#capturas-de-tela)
+- [Integrantes do Grupo](#integrantes-do-grupo)
+
+# Visão Geral
+
+O **CatGallery PWA** é uma aplicação web progressiva (PWA) que permite ao usuário:
+
+- visualizar imagens aleatórias de gatos;
+- pesquisar raças utilizando a TheCatAPI;
+- salvar gatos como favoritos;
+- visualizar e remover favoritos;
+- utilizar parte da aplicação em **modo offline** graças ao service worker;
+- instalar o PWA no celular ou computador como se fosse um aplicativo nativo.
+
+A aplicação utiliza um **backend próprio** para abstrair chamadas à **TheCatAPI**, além de implementar um **CRUD de favoritos** com persistência local em arquivo JSON.
+
+# Arquitetura do Projeto
+
+O projeto segue uma arquitetura **monorepo**, com dois serviços principais:
+
+             ┌─────────────────────────────┐
+             │        PWA (Vite/React)     │
+             │   /apps/web                 │
+             │ - UI                        │
+             │ - Service Worker            │
+             │ - Manifest                  │
+             └───────────────┬─────────────┘
+                             │ fetch()
+                             │
+                             ▼
+            ┌───────────────────────────────────┐
+            │        Backend Node/Express       │
+            │        /apps/api                  │
+            │                                   │
+            │ GET /api/cats/random  → TheCatAPI │
+            │ GET /api/cats/breeds  → TheCatAPI │
+            │ GET/POST/DELETE /favorites (CRUD) │
+            └───────────────────┬────────────────┘
+                                │
+                                ▼
+                favorites.json (persistência local)
+
+
+Orquestração dos serviços feita com **Docker Compose**
+
+# Tecnologias Utilizadas
+
+# Frontend (PWA)
+- Vite + React
+- Service Worker + Cache API
+- Manifest Web App
+- Fetch API
+- Nginx (produção)
+
+
+# Backend
+- Node.js + Express
+- File persistence (favorites.json)
+- TheCatAPI Proxy
+- CORS
+
+
+# Infraestrutura
+- Docker
+- Docker Compose
+- GitHub Actions
+
+
+# Testes
+- Playwright (E2E)
+- Jest/Vitest (unitários)
+
+# Funcionalidades do PWA
+
+# ✔ Listar gatos aleatórios  
+# ✔ Buscar raças (TheCatAPI)  
+# ✔ Adicionar e remover favoritos  
+# ✔ Persistência de favoritos no backend  
+# ✔ Navegação SPA com React  
+# ✔ Service Worker com offline básico  
+# ✔ Instalável no celular/desktop  
+# ✔ Build otimizado para produção  
+
+# Estrutura do Repositório
+
+# Backend (API)
+
+A API funciona como:
+
+- **Proxy** para chamadas da TheCatAPI  
+- **CRUD de favoritos** persistidos localmente  
+
+Arquivo principal: `apps/api/index.js`
+
+# Endpoints da API
+
+# Imagens e Raças
+
+| Método | Rota | Descrição |
+|-------|-------|-----------|
+| GET | `/api/cats/random` | Retorna imagens aleatórias da TheCatAPI |
+| GET | `/api/cats/breeds` | Lista raças disponíveis |
+
+# Favoritos
+
+| Método | Rota | Descrição |
+|-------|-------|-----------|
+| GET | `/api/favorites` | Lista gatos favoritos |
+| POST | `/api/favorites` | Adiciona um favorito `{ id, url }` |
+| DELETE | `/api/favorites/:id` | Remove favorito pelo ID |
+
+# Execução Local com Docker Compose
+
+# Pré-requisitos
+- Docker instalado  
+- Docker Compose instalado  
+- Variável de ambiente:
+
+
+### **Rodar a aplicação**
+
+```bash
+docker compose up --build
